@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Show Results</title>
+    <style>
+      body {
+        background-image: linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%);
+      }
+      /* Стили для кнопки */
+      #button-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+      }
+
+      button {
+        font-size: 2em;
+        padding: 0.5em 1em;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        color: #000;
+        cursor: pointer;        
+      }
+      
+      button:hover {
+        background-color: #ccc;
+      }
+      
+      /* Стили для результатов */
+      #results {
+        margin-top: 1em;
+        font-family: monospace;
+        white-space: pre-wrap;
+      }
+
+      /* Стили для формы */
+      #date-form {
+        display: flex;
+        justify-content: center;
+        margin-top: 1em;
+        align-items: center;
+      }
+      
+      #date-form label {
+        font-size: 1.2em;
+        margin-right: 0.5em;
+      }
+      
+      #date-form input[type="date"] {
+        font-size: 1.2em;
+        padding: 0.5em 1em;
+        margin-right: 0.5em;
+      }
+      
+      #date-form button {
+        font-size: 1.2em;
+        padding: 0.5em 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="button-container">
+      <h1>Show Results</h1>
+      <div id="date-form">
+        <label for="date-input">Выберите дату:</label>
+        <input type="date" id="date-input" name="date" value="{{ date }}" min="{{ (default_date - timedelta(days=7)).strftime('%Y-%m-%d') }}" max="{{ (default_date + timedelta(days=7)).strftime('%Y-%m-%d') }}" required>
+        <button id="show-results">Показать результаты</button>
+      </div>
+    </div>
+    <script>
+      // Установка значения по умолчанию для поля ввода даты
+      const dateInput = document.getElementById("date-input");
+      const today = new Date();
+      const todayStr = today.toISOString().split('T')[0];
+      dateInput.value = todayStr;
+
+      // Установка минимальной и максимальной даты для поля ввода
+      const minDate = new Date();
+      minDate.setDate(today.getDate() - 7);
+      const minDateStr = minDate.toISOString().split('T')[0];
+      dateInput.min = minDateStr;
+      
+      const maxDate = new Date();
+      maxDate.setDate(today.getDate() + 7);
+      const maxDateStr = maxDate.toISOString().split('T')[0];
+      dateInput.max = maxDateStr;
+
+      // Обработчик клика на кнопке "Показать результаты"
+      const showResultsBtn = document.getElementById("show-results");
+      showResultsBtn.addEventListener("click", function(event) {
+        event.preventDefault(); // Отменяем действие по умолчанию
+        
+        const selectedDate = dateInput.value;
+        window.location.href = "/results?date=" + selectedDate;
+      });
+    </script>
+   </body>
+   </html>
+   
+

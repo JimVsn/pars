@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Match Details</title>
+    <style>
+      body {
+        background-image: linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%);
+      }
+      /* Стили для таблицы */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        background-color: white;
+      }
+      th, td {
+        text-align: left;
+        padding: 8px;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      th {
+        background-color: #4CAF50;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Детали матча</h1>
+    <h2>{{ team1 }} vs {{ team2 }}</h2>
+    <table id="match-table">
+      <thead>
+        <tr>
+          <th>Дата</th>
+          <th>Команда 1</th>
+          <th>Команда 2</th>
+          <th>Счет</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Место для вставки данных результатов матча -->
+      </tbody>
+    </table>
+
+    <script>
+      function get_match_results() {
+        const tableBody = document.querySelector("#match-table tbody");
+        const matchKey = "{{ match_key }}";
+        const url = `/match_results?match_key=${matchKey}`;
+
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            data.forEach(game => {
+              const row = document.createElement("tr");
+
+              const dateCell = document.createElement("td");
+              dateCell.textContent = game.date;
+
+              const team1Cell = document.createElement("td");
+              team1Cell.textContent = game.team_1;
+
+              const team2Cell = document.createElement("td");
+              team2Cell.textContent = game.team_2;
+
+              const scoreCell = document.createElement("td");
+              scoreCell.textContent = game.score;
+
+              row.appendChild(dateCell);
+              row.appendChild(team1Cell);
+              row.appendChild(team2Cell);
+              row.appendChild(scoreCell);
+
+              tableBody.appendChild(row);
+            });
+          })
+          .catch(error => {
+            console.error("Error:", error);
+          });
+      }
+
+      // Вызов функции для получения результатов матча при загрузке страницы
+      get_match_results();
+    </script>
+  </body>
+</html>
+
+
+

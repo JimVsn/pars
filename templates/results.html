@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Show Results</title>
+    <style>
+      body {
+        background-image: linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%);
+      }
+      /* Стили для таблицы */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        background-color: white;
+      }
+      th, td {
+        text-align: left;
+        padding: 8px;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      th {
+        background-color: #4CAF50;
+        color: white;
+      }
+
+      .score {
+        font-weight: 900;
+      }
+
+      tr.match-row {
+        cursor: pointer;
+      }
+      
+      tr.match-row:hover {
+        background-color: #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="go-back">Назад</button>
+    <h1>Результаты матчей</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Дата</th>
+          <th>Команда 1</th>
+          <th>Команда 2</th>
+          <th class="score">Счет</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for game in results %}
+          <tr class="match-row" data-match-key="{{ game.match_key }}">
+            <td>{{ game.date }}</td>
+            <td>{{ game.team_1 }}</td>
+            <td>{{ game.team_2 }}</td>
+            <td class="score">{{ game.score }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <script>
+      const goBackBtn = document.getElementById("go-back");
+      goBackBtn.addEventListener("click", function() {
+        window.location.href = "/"; // Переход на страницу index.html
+      });
+
+      const matchRows = document.querySelectorAll('.match-row');
+      matchRows.forEach(row => {
+        row.addEventListener('click', function() {
+          const matchKey = row.getAttribute('data-match-key');
+          const url = `/match?match_key=${matchKey}`;
+          window.location.href = url; // Переход на страницу match.html с передачей параметра match_key
+        });
+      });
+    </script>
+  </body>
+</html>
